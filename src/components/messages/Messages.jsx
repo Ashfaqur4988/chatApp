@@ -32,6 +32,14 @@ const Messages = () => {
       {messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
+
+      {messages.length === 0 && !loading ? (
+        <span className="text-xl font-bold mt-12 flex justify-center items-center">
+          Send a message to start conversation
+        </span>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

@@ -3,10 +3,12 @@
 
 import { format } from "timeago.js";
 import { useAuthContext } from "../../context/AuthContext";
+import useConversation from "../../zustand/useConversation";
 
 // eslint-disable-next-line react/prop-types
 const Message = ({ message }) => {
   const { currentUser } = useAuthContext();
+  const { selectedConversation } = useConversation();
 
   return (
     <div>
@@ -22,12 +24,20 @@ const Message = ({ message }) => {
               : "flex-row"
           }`}
         >
-          <div className="text-gray-300 py-1">{currentUser.username}</div>
+          <div className="text-gray-300 py-1">
+            {currentUser.id === message.senderId
+              ? currentUser.username
+              : selectedConversation.username}
+          </div>
           <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
             <img
               src={
-                currentUser.profilePic
+                currentUser.id === message.senderId
                   ? currentUser.profilePic
+                    ? currentUser.profilePic
+                    : "/noavatar.jpg"
+                  : selectedConversation.profilePic
+                  ? selectedConversation.profilePic
                   : "/noavatar.jpg"
               }
               alt=""
