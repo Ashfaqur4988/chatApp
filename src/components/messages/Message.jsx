@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
+import { format } from "timeago.js";
 import { useAuthContext } from "../../context/AuthContext";
 
 // eslint-disable-next-line react/prop-types
@@ -40,8 +41,10 @@ const Message = ({ message }) => {
                 : "bg-gray-700"
             }`}
           >
-            <p>{message.body}</p>
-            <p className="text-xs text-gray-400 mt-1">1 min ago</p>
+            <p className="text-white">{message.body}</p>
+            <p className="text-xs text-gray-300 mt-1">
+              {format(message.createdAt)}
+            </p>
           </div>
         </div>
       </div>
