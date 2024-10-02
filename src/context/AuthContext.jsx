@@ -1,11 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const AuthContext = createContext({
-  currentUser: null,
-  setCurrentUser: () => {},
-  isLoading: true,
-});
+const AuthContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
@@ -13,10 +9,13 @@ export const useAuthContext = () => {
 };
 
 export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
-  //logic will go here
+  //get user information
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -37,6 +36,13 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     fetchUser();
+  }, []);
+
+  //to set the local storage
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    }
   }, [currentUser]);
 
   return (

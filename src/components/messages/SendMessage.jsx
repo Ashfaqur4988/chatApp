@@ -9,7 +9,7 @@ const SendMessage = () => {
   return (
     <>
       <div className="border-t border-gray-800 p-4">
-        <from className="flex items-center space-x-2">
+        <form className="flex items-center space-x-2">
           <input
             type="text"
             value={newMessage}
@@ -25,7 +25,7 @@ const SendMessage = () => {
           >
             <Send size={20} />
           </button>
-        </from>
+        </form>
       </div>
     </>
   );

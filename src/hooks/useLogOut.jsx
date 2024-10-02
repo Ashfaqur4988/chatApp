@@ -18,6 +18,7 @@ const useLogOut = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
+      localStorage.removeItem("user");
       setCurrentUser(null);
       toast.success("Logged out successfully");
     } catch (error) {
