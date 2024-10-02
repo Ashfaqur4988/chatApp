@@ -26,6 +26,7 @@ const useSignUp = () => {
       console.log(currentUser);
     } catch (error) {
       console.log(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
