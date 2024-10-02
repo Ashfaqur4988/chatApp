@@ -1,9 +1,20 @@
 /* eslint-disable no-unused-vars */
+
+import useConversation from "../../zustand/useConversation";
+
 /* eslint-disable react/prop-types */
 const Conversation = ({ conversation }) => {
+  const { setSelectedConversation, selectedConversation } = useConversation();
+  const isSelected = selectedConversation?.id === conversation.id;
+
   return (
     <>
-      <div className="flex items-center p-4 hover:bg-gray-800 cursor-pointer">
+      <div
+        className={`flex items-center p-4 hover:bg-gray-800 cursor-pointer ${
+          isSelected ? "bg-gray-700" : ""
+        }`}
+        onClick={() => setSelectedConversation(conversation)}
+      >
         <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
           <img
             src={

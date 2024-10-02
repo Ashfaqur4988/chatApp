@@ -5,11 +5,11 @@ import useConversation from "../../zustand/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
 
 const MessageWindow = () => {
-  const { selectedConversion } = useConversation();
+  const { selectedConversation } = useConversation();
 
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-100">
-      {!selectedConversion ? (
+      {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
