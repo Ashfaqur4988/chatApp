@@ -13,10 +13,6 @@ const SideBar = () => {
           
         ))} */}
         <Conversations />
-        <Conversations />
-        <Conversations />
-        <Conversations />
-        <Conversations />
       </div>
     </div>
   );

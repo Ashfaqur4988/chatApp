@@ -1,24 +1,36 @@
+import useGetConversations from "../../hooks/useGetConversations";
+import Conversation from "./Conversation";
+
 const Conversations = () => {
+  const { conversations, loading } = useGetConversations();
   return (
-    <>
-      <div className="flex items-center p-4 hover:bg-gray-800 cursor-pointer">
-        <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
-          <img src="/noavatar.jpg" alt="" className="rounded-full" />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold">name</h3>
-            <span className="text-xs text-gray-500">time</span>
-          </div>
-          <p className="text-sm text-gray-400 truncate">message </p>
-        </div>
-        {/* {conversation.unread > 0 && (
-          <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center ml-2">
-            <span className="text-xs">{conversation.unread}</span>
-          </div>
-        )} */}
-      </div>
-    </>
+    <div>
+      {conversations.map((c) => (
+        <Conversation key={c.id} conversation={c} />
+      ))}
+      {loading ? (
+        <svg
+          className="w-5 h-5 mx-auto text-white animate-spin"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+      ) : null}
+    </div>
   );
 };
 export default Conversations;

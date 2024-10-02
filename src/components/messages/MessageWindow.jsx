@@ -1,12 +1,15 @@
 import { Hand, MessageSquareMore } from "lucide-react";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
+import useConversation from "../../zustand/useConversation";
+import { useAuthContext } from "../../context/AuthContext";
 
 const MessageWindow = () => {
-  const noChatSelected = false;
+  const { selectedConversion } = useConversation();
+
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-100">
-      {noChatSelected ? (
+      {!selectedConversion ? (
         <NoChatSelected />
       ) : (
         <>
@@ -23,11 +26,13 @@ const MessageWindow = () => {
 export default MessageWindow;
 
 const NoChatSelected = () => {
+  const { currentUser } = useAuthContext();
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <div className="flex flex-col items-center justify-center font-semibold gap-5">
         <p className="text-4xl">
-          <Hand fill="yellow" size={60} className="inline" /> Welcome Username!
+          <Hand fill="yellow" size={60} className="inline" /> Welcome{" "}
+          {currentUser.username}!
         </p>
         <p className="text-2xl">Select a chat to start messaging</p>
         <MessageSquareMore size={80} />
