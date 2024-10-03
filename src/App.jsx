@@ -31,6 +31,7 @@ function App() {
             path="/signup"
             element={!currentUser ? <SignUp /> : <Navigate to={"/"} />}
           />
+          <Route path="*" element={<SignUp />} />
         </Routes>
         <Toaster />
       </Router>
