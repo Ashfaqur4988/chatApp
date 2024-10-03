@@ -1,8 +1,10 @@
 import { Settings, LogOut } from "lucide-react";
 import { useState } from "react";
 import useLogOut from "../../hooks/useLogOut";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
+  const { currentUser } = useAuthContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useLogOut();
 
@@ -32,10 +34,13 @@ const Navbar = () => {
             <LogOut className="h-6 w-6" />
           </button>
           <img
-            src="/noavatar.jpg"
+            src={
+              currentUser.profilePic ? currentUser.profilePic : "/noavatar.jpg"
+            }
             alt="Profile"
             className="h-10 w-10 rounded-full cursor-pointer"
           />
+          <span>{currentUser.username}</span>
         </div>
         <div className="md:hidden">
           <button
@@ -78,11 +83,15 @@ const Navbar = () => {
             </button>
             <div className="flex items-center space-x-2 p-2">
               <img
-                src="/noavatar.jpg"
+                src={
+                  currentUser.profilePic
+                    ? currentUser.profilePic
+                    : "/noavatar.jpg"
+                }
                 alt="Profile"
                 className="h-10 w-10 rounded-full"
               />
-              <span>John Doe</span>
+              <span>{currentUser.username}</span>
             </div>
           </div>
         </div>
