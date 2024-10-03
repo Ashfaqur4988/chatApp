@@ -3,9 +3,14 @@ import Messages from "./Messages";
 import SendMessage from "./SendMessage";
 import useConversation from "../../zustand/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
+import useChatScroll from "../../hooks/useChatScroll";
+import useGetMessages from "../../hooks/useGetMessages";
 
 const MessageWindow = () => {
   const { selectedConversation } = useConversation();
+  const { messages } = useGetMessages();
+
+  const messageRef = useChatScroll(messages);
 
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-100">
@@ -13,7 +18,10 @@ const MessageWindow = () => {
         <NoChatSelected />
       ) : (
         <>
-          <div className="flex-1 p-4 space-y-4 overflow-y-scroll scrollbar-hide">
+          <div
+            className="flex-1 p-4 space-y-4 overflow-y-scroll scrollbar-hide"
+            ref={messageRef}
+          >
             <Messages />
           </div>
           <SendMessage />
