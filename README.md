@@ -61,8 +61,8 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 
 ### Prerequisites
 
-- **Node.js** (version X.X.X)
-- **PostgreSQL** (version X.X)
+- **Node.js** (version 20.17.0)
+- **PostgreSQL** (version 5.20.0)
 - **npm** or **yarn** (package manager)
 
 ### Backend Setup
