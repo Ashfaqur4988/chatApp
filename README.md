@@ -1,4 +1,4 @@
-# Simple Chat App
+# Chatty (Simple Chat App)
 
 A **real-time chat application** built using **React** and **JavaScript** for the frontend, **Node.js** and **Express** for the backend, **PostgreSQL** as the database, and **Prisma** as the ORM.
 
@@ -11,7 +11,7 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 - [Database Schema](#database-schema)
 - [API Endpoints](#api-endpoints)
 - [Usage](#usage)
-- [Testing](#testing)
+- [Use Credentials](#User-Credentials)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -21,9 +21,8 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 
 - **Real-time messaging**: Powered by **Socket.io** for instant communication between users.
 - **User authentication**: Login, registration, and secure session management using **JWT**.
-- **Chat rooms and private messaging**.
+- **Private messaging**.
 - **Message persistence**: Messages are stored in **PostgreSQL**.
-- **Typing indicators**: Show when users are typing in a conversation.
 - **Online/offline status**: Display user availability in real-time.
 
 ---
@@ -34,6 +33,11 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 
 - **React** (UI library)
 - **JavaScript** (logic and functionality)
+- **React Router DOM** (routing)
+- **Formik** (form handling)
+- **Yup** (form validation)
+- **Lucide** React (icon library)
+- **Zustand** (state management)
 - **Socket.io-client** (real-time communication)
 - **Tailwind CSS** (styling)
 
@@ -42,6 +46,9 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 - **Node.js** (runtime)
 - **Express** (server framework)
 - **Socket.io** (WebSocket implementation)
+- **bcrypt** (password hashing)
+- **cookie-parser** (parsing cookies)
+- **jsonwebtoken** (JWT for authentication)
 - **Prisma ORM** (database management)
 
 ### Database
@@ -63,8 +70,8 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/chat-app.git
-   cd chat-app/backend
+   git clone https://github.com/Ashfaqur4988/chatty.git
+   cd chatty
    ```
 
 2. Install dependencies:
@@ -81,15 +88,9 @@ A **real-time chat application** built using **React** and **JavaScript** for th
    SOCKET_PORT=8080
    ```
 
-4. Run database migrations using Prisma:
-
+4. Start the backend server:
    ```bash
-   npx prisma migrate dev --name init
-   ```
-
-5. Start the backend server:
-   ```bash
-   npm run dev
+   npm run start
    ```
 
 ### Frontend Setup
@@ -108,7 +109,7 @@ A **real-time chat application** built using **React** and **JavaScript** for th
 
 3. Start the frontend development server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ---
@@ -131,29 +132,49 @@ Here’s an example of the schema for your chat app:
 
 ```prisma
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  messages  Message[]
-  createdAt DateTime @default(now())
+  id               String   @id @default(cuid())
+  username         String   @unique
+  email            String
+  password         String
+  gender           Gender?
+  profilePic       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  conversationsIds String[]
+
+  conversations Conversation[]
+  messages      Message[]
+}
+
+enum Gender {
+  male
+  female
 }
 
 model Conversation {
-  id        Int      @id @default(autoincrement())
-  users     User[]   @relation("Conversations")
-  messages  Message[]
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participantIds String[]
+  participants   User[]
+
+  messageIds String[]
+  messages   Message[]
 }
 
 model Message {
-  id              Int      @id @default(autoincrement())
-  content         String
-  user            User     @relation(fields: [userId], references: [id])
-  userId          Int
-  conversation    Conversation @relation(fields: [conversationId], references: [id])
-  conversationId  Int
-  createdAt       DateTime @default(now())
+  id String @id @default(cuid())
+
+  conversations   Conversation @relation(fields: [conversationsId], references: [id])
+  conversationsId String
+
+  sender   User   @relation(fields: [senderId], references: [id])
+  senderId String
+
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 ```
 
@@ -163,36 +184,44 @@ model Message {
 
 ### Authentication
 
-- **POST** `/api/auth/register`: Register a new user.
-- **POST** `/api/auth/login`: Log in an existing user and return a JWT.
+- **POST** `/api/auth/signup`: Register a new user.
+- **POST** `/api/auth/login`: Log in an existing user and return a JWT..
+- **POST** `/api/auth/logout`: Log out the user and clear the session.
+- **GET** `/api/auth/me`: Get logged in user details.
 
 ### Messages
 
-- **GET** `/api/messages/:conversationId`: Get all messages for a specific conversation.
-- **POST** `/api/messages`: Send a new message.
+- **GET** `/api/messages/:senderId`: Get all messages for with a specific user.
+- **POST** `/api/messages/send/:receiverId`: Send a new message to a user.
 
 ### Conversations
 
-- **GET** `/api/conversations`: Get all conversations for the logged-in user.
-- **POST** `/api/conversations`: Create a new conversation between users.
+- **GET** `/api/messages/conversations`: Get all conversations for the logged-in user.
 
 ---
 
 ## Usage
 
 1. Register or log in to access the chat.
-2. Create a conversation with another user or join an existing chat room.
+2. Create a conversation with another user.
 3. Send messages in real-time.
-4. See which users are online and active.
+4. See which users are online.
 
 ---
 
-## Testing
+## User Credentials
 
-To run tests for the backend, ensure you have **Jest** installed and set up your testing environment.
+To test the app user can enter these credentials:
 
 ```bash
-npm test
+User One
+username: tony
+password: Tony@123
+
+User Two
+username: robin
+password: Robin@123
+
 ```
 
 ---
